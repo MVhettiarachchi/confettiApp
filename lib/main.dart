@@ -3,10 +3,11 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const ConfettiSample());
 
-class ConfettiSample extends StatelessWidget {
-  const ConfettiSample({Key key}) : super(key: key);
+
+void main() => runApp(const FirstScreen());
+class FirstScreen extends StatelessWidget {
+  const FirstScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +15,21 @@ class ConfettiSample extends StatelessWidget {
         title: 'Confetti',
         home: Scaffold(
           backgroundColor: Colors.grey[900],
-          body: MyApp(),
+          body: ConfettiSample(),
+          appBar: AppBar(
+          title: Text('Welcome to Flutter'),
+        ),
         ));
   }
 }
 
-class MyApp extends StatefulWidget {
+
+class ConfettiSample extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _ConfettiSampleState createState() =>  _ConfettiSampleState ();
 }
 
-class _MyAppState extends State<MyApp> {
+class _ConfettiSampleState  extends State<ConfettiSample> {
 
   ConfettiController _controllerBottomCenter;
 
@@ -85,7 +90,6 @@ class _MyAppState extends State<MyApp> {
       ],
     );
   }
-
   Text _display(String text) {
     return Text(
       text,
