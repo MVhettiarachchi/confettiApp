@@ -31,12 +31,12 @@ class ConfettiSample extends StatefulWidget {
 
 class _ConfettiSampleState  extends State<ConfettiSample> {
 
-  ConfettiController _controllerBottomCenter;
+  ConfettiController _controllerTopCenter;
 
   @override
   void initState() {
     
-    _controllerBottomCenter =
+    _controllerTopCenter =
         ConfettiController(duration: const Duration(seconds: 10));
     super.initState();
   }
@@ -44,7 +44,7 @@ class _ConfettiSampleState  extends State<ConfettiSample> {
   @override
   void dispose() {
     
-    _controllerBottomCenter.dispose();
+    _controllerTopCenter.dispose();
     super.dispose();
   }
 
@@ -55,20 +55,22 @@ class _ConfettiSampleState  extends State<ConfettiSample> {
         
         
         Align(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.topCenter,
           child: ConfettiWidget(
-            confettiController:  _controllerBottomCenter,
-            blastDirection: -pi / 2, // radial value bottom
+            confettiController:  _controllerTopCenter,
+            //blastDirection: -pi / 2, // radial value bottom
+            blastDirectionality: BlastDirectionality.explosive,
             particleDrag: 0.05, // apply drag to the confetti
             emissionFrequency: 0.05, // how often it should emit
             numberOfParticles: 20, // number of particles to emit
             gravity: 0.3, 
             maxBlastForce: 100,
             minBlastForce: 80,
-            shouldLoop: false,
+            shouldLoop: true,
             colors: const [
-              Colors.green,
+              Colors.lightGreen,
               Colors.blue,
+              Colors.lightBlue,
               Colors.pink,
               Colors.yellow,
               Colors.purple,
@@ -78,11 +80,15 @@ class _ConfettiSampleState  extends State<ConfettiSample> {
           ),
         ),
         Align(
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.topCenter,
           child: FlatButton(
               color: Colors.blueAccent,
               onPressed: () {
-                 _controllerBottomCenter.play();
+                 _controllerTopCenter.play();
+                 showDialog(context: context,
+                  builder: (BuildContext context){
+                    return SimpleCustomAlert();
+                  });
               },
               child: _display('Click Me')),
         ),
@@ -94,6 +100,56 @@ class _ConfettiSampleState  extends State<ConfettiSample> {
     return Text(
       text,
       style: const TextStyle(color: Colors.white, fontSize: 20),
+    );
+  }
+}
+
+class SimpleCustomAlert extends StatefulWidget {
+  @override
+  _SimpleCustomAlertState createState() => _SimpleCustomAlertState();
+}
+
+class _SimpleCustomAlertState extends State<SimpleCustomAlert> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.0)
+      ),
+      child: Stack(
+        overflow: Overflow.visible,
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 70, 10, 10),
+              child: Column(
+                children: [
+                  Text('Congratulations', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                  SizedBox(height: 5,),
+                  Text('Best Wishes', style: TextStyle(fontSize: 20),),
+                  SizedBox(height: 20,),
+                  RaisedButton(onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                    color: Colors.redAccent,
+                    child: Text('Okay', style: TextStyle(color: Colors.white),),
+                  )
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            top: -60,
+            child: CircleAvatar(
+              backgroundColor: Colors.redAccent,
+              radius: 60,
+              child: Icon(Icons.favorite,color: Colors.pink, size: 50,),
+            )
+          ),
+        ],
+      )
     );
   }
 }
